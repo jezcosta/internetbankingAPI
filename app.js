@@ -1,12 +1,14 @@
 const express = require('express');
 const path = require('path');
 const consign = require('consign');
+const helmet = require('helmet');
 const port = 3000;
 
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 
 consign({})
