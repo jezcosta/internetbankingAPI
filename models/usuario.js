@@ -1,5 +1,5 @@
+const conn = require('./connection.js');
 const mongoose = require('mongoose');
-const conn = require('../models/connection.js');
 
 // Model Usuarios
 // Definindo o Model
@@ -17,18 +17,18 @@ const UsuarioSchema =  mongoose.Schema({
 
 // Collection
 mongoose.model('usuarios', UsuarioSchema);
+/* 
+const Freddy = mongoose.model('usuarios')
 
-// const Osmar = mongoose.model('usuarios')
-
-// new Osmar ({
-//     nmUsuario: "Osmar",
-//     sobrenomeUsuario: "Lúcio",
-//     nrBanco: 011,
-//     nrAgencia: 213,
-//     nrConta: 334112,
-//     vlSaldo: 1500.00,
-//     dsSenha: 1234,
-//     nrCPF: 1223131231,
-//     dsEmail: 'osmar.lucio@gmail.com'
-// }).save().then(() => {console.log("Usuário criado com sucesso!")})
-//   .catch((err) => {console.log("Houve um erro ao registrar o usuário: " +err)})
+new Freddy ({
+    nmUsuario: "Freddy",
+    sobrenomeUsuario: "Henrique",
+    nrBanco: 011,
+    nrAgencia: 21343,
+    nrConta: 33443112,
+    vlSaldo: 15020.00,
+    dsSenha: 12324,
+    nrCPF: 12231331231,
+    dsEmail: 'freddyo@gmail.com'
+}).save().then(() => {console.log("Usuário criado com sucesso!")})
+  .catch((err) => {console.log("Houve um erro ao registrar o usuário: " +err)}) */
