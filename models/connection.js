@@ -8,4 +8,4 @@ mongoose.connect("mongodb://localhost/db_internetBanking,",{
     console.log('Banco conectado');
 }).catch((err) => {
     console.log("Houve um erro ao se conectar ao banco " +err)
-})
+});
