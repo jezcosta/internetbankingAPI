@@ -1,5 +1,5 @@
+const conn = require('./connection.js');
 const mongoose = require('mongoose');
-const conn = require('../models/connection.js');
 
 // Model Benificiario
 // Definindo o Model
@@ -16,15 +16,15 @@ const BenificiarioSchema =  mongoose.Schema({
 // Collection
 mongoose.model('benificiarios', BenificiarioSchema);
 
-const Denis = mongoose.model('benificiarios')
+/* const Juliett = mongoose.model('benificiarios') */
 
-new Denis ({
-    nmBenificiario: "Denis",
-    sobrenomeBenificiario: "Monte",
-    nrBanco: 013,
-    nrAgencia: 4213,
-    nrConta: 734112,
-    nrCPF: 8223131231,
-    dsEmail: 'deniss.m@gmail.com'
+/* new Juliett ({
+    nmBenificiario: "Juliett",
+    sobrenomeBenificiario: "Ramos",
+    nrBanco: 0113,
+    nrAgencia: 24213,
+    nrConta: 7342112,
+    nrCPF: 82231321231,
+    dsEmail: 'ju.lietem@gmail.com'
 }).save().then(() => {console.log("Benificiário criado com sucesso!")})
-  .catch((err) => {console.log("Houve um erro ao registrar o benificiário: " +err)})
+  .catch((err) => {console.log("Houve um erro ao registrar o benificiário: " +err)}) */
