@@ -1,12 +1,12 @@
-const conn = require('./connection.js');
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // Model Transacao
 // Definindo o Model
 const TransacaoSchema =  mongoose.Schema({ 
     tipoTransacao: {type: String, required: true},
     dtTransacao  : {type: Date, default: Date.now()},
-    nmBeneficiario: {type: Schema.Types.ObjectId, ref: beneficiarios, required: true},
+    nmBeneficiario: {type: Schema.Types.ObjectId, ref: 'beneficiarios'},
     nrBanco: {type: Number, required: true},
     nrConta: {type: Number, required: true},
     nrAgencia: {type: Number, required: true},
@@ -16,4 +16,4 @@ const TransacaoSchema =  mongoose.Schema({
 });
 
 // Collection
-mongoose.model('transacoes', TransacaoSchema);
+mongoose.model('transacao', TransacaoSchema);
