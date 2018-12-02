@@ -1,4 +1,3 @@
-const conn = require('./connection.js');
 const mongoose = require('mongoose');
 
 // Model Benificiario

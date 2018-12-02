@@ -5,5 +5,5 @@ const mongoose = require('mongoose');
     mongoose.Promise = global.Promise;
 
     mongoose.connect('mongodb://localhost/db_internetBanking')
-    .then(() => { console.log('banco conectado')})
-    .catch((err) => {'erro ao conectar o banco ' + err});
+        .then(() => { console.log('banco conectado')})
+        .catch((err) => {'erro ao conectar o banco ' + err});
