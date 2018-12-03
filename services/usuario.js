@@ -27,8 +27,7 @@ module.exports = (app) => {
             });
         },
         logout(req, res) {
-            //chama models/regras de negocio aqui
-            res.send('realiza logout do usuario');
+            res.status(200).send({ auth: false, token: null });
         },
         getInfo(req, res) {
             //chama models/regras de negocio aqui
