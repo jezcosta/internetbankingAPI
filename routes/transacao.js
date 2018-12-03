@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const { transacao } = app.services;
+    const { transacao, usuario } = app.services;
 
-    app.post('/api/v1/transacoes/transferir', transacao.transferir);
+    app.post('/api/v1/transacoes/transferir', usuario.verificaJWT, transacao.transferir);
 };

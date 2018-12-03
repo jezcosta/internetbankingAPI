@@ -1,8 +1,8 @@
 module.exports = (app) => {
-    const { conta } = app.services;
+    const { conta, usuario } = app.services;
 
-    app.post('/api/v1/conta', conta.getInformacoesConta);
-    app.post('/api/v1/conta/favorecidos', conta.getFavorecidos);
-    app.post('/api/v1/conta/criar-favorecido', conta.salvaFavorecido);
-    app.post('/api/v1/extrato', conta.getExtrato);
+    app.post('/api/v1/conta', usuario.verificaJWT, conta.getInformacoesConta);
+    app.post('/api/v1/conta/favorecidos', usuario.verificaJWT,conta.getFavorecidos);
+    app.post('/api/v1/conta/criar-favorecido', usuario.verificaJWT, conta.salvaFavorecido);
+    app.post('/api/v1/extrato', usuario.verificaJWT, conta.getExtrato);
 };
