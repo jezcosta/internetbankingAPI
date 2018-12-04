@@ -5,7 +5,7 @@ const path = require('path');
 const consign = require('consign');
 const helmet = require('helmet');
 const conn = require('./models/connection.js');
-const port = 3000;
+const port = 8080;
 
 const app = express();
 
