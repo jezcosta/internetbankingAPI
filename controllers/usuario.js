@@ -3,16 +3,17 @@ module.exports = (app) => {
 
     const usuarioService = {
         login(req, res) {
+            res.setHeader('Content-Type', 'application/json');
             if(req.body.cpf === '123' && req.body.senha === '123'){
                 //auth ok
                 const id = 1; //esse id viria do banco de dados
                 var token = jwt.sign({ id }, process.env.SECRET, {
                     expiresIn: 600
                 });
-                    res.status(200).send({ success: true, token: token });
+                res.status(200).send(JSON.stringify({ success: true, token: token }));
             }
             
-            res.status(500).send('Login inválido!');
+            res.status(500).send(JSON.stringify({ success: false, erro:"Login Inválido" }));
         },
         logout(req, res) {
             res.status(200).send({ auth: false, token: null });
