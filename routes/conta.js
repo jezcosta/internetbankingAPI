@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const { conta, usuario } = app.services;
+    const { conta, usuario } = app.controllers;
 
     app.post('/api/v1/conta', usuario.verificaJWT, conta.getInformacoesConta);
     app.post('/api/v1/conta/favorecidos', usuario.verificaJWT,conta.getFavorecidos);

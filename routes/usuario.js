@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const { usuario } = app.services;
+    const { usuario } = app.controllers;
 
     app.post('/api/v1/usuario/logon', usuario.login);
     app.get('/api/v1/usuario/logout', usuario.logout);
