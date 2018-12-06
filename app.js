@@ -5,11 +5,12 @@ const path = require('path');
 const consign = require('consign');
 const helmet = require('helmet');
 const cors = require('cors');
-const conn = require('./models/connection.js');
+global.mongoose = require('mongoose');
 const error = require('./middlewares/erros');
 const port = process.env.PORT || 3000;
 
 const app = express();
+mongoose.connect('mongodb://localhost:27017/api-banking');
 
 const options = {
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
@@ -34,6 +35,6 @@ consign({})
 ;
 
 app.use(error.notFound);
-app.use(error.serverError);
+// app.use(error.serverError);
 
 app.listen(port, () => console.log('Server running'))
