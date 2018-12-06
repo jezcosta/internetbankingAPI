@@ -1,5 +1,6 @@
 module.exports = (app) => {
     const jwt = require('jsonwebtoken');
+    const Usuario = app.models.Usuario;
 
     const usuarioService = {
         login(req, res) {
@@ -21,6 +22,15 @@ module.exports = (app) => {
         getInfo(req, res) {
             //chama models/regras de negocio aqui
             res.send('pega informacoes pessoais do usuario');
+        },
+        listar(req, res) {
+            Usuario
+            .find({})
+            .then(data => {
+                res.status(200).send(data);
+            }).catch(e => {
+                res.status(400).send(e)
+            });
         }
     };
     return usuarioService;
