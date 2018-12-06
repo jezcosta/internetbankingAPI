@@ -8,9 +8,10 @@ const cors = require('cors');
 global.mongoose = require('mongoose');
 const error = require('./middlewares/erros');
 const port = process.env.PORT || 3000;
-
+const mongoHost = process.env.DBHOST || 'mongodb://localhost:27017/api-banking';
 const app = express();
-mongoose.connect('mongodb://localhost:27017/api-banking');
+
+mongoose.connect(mongoHost);
 
 const options = {
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
