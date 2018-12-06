@@ -12,7 +12,7 @@ module.exports = () => {
         nrConta: {type: Number},
         vlSaldo: {type: Number},
         dsSenha: {type: String},
-        nrCPF: {type: Number },
+        nrCPF: {type: String, unique: true },
         dsEmail: {type: String}                            
     });
 
