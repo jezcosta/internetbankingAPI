@@ -7,5 +7,5 @@ module.exports = (app) => {
     app.post('/api/v1/usuario', autenticacao.verificaJWT, usuario.getInfo);
 
     app.post('/api/v1/usuario/listar', autenticacao.verificaJWT, usuario.listar);
-    app.post('/api/v1/usuario/adicionar', autenticacao.verificaJWT, usuario.adicionar);
+    app.post('/api/v1/usuario/adicionar', usuario.adicionar);
 };
