@@ -27,7 +27,7 @@ app.use(helmet());
 app.use(bodyparser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-consign({})
+consign({cwd: process.cwd()})
   .include('models')
   .then('controllers')
   .then('middlewares')

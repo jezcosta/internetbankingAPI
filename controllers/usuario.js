@@ -39,29 +39,39 @@ module.exports = (app) => {
         },
         listar(req, res) {
             Usuario
-                .find({})
-                .then(data => {
-                    res.status(200).send(data);
-                }).catch(e => {
-                    res.status(400).send(e)
-                });
+            .find({})
+            .then(data => {
+                res.status(200).send(data);
+            }).catch(e => {
+                res.status(400).send(e)
+            });
         },
         adicionar(req, res) {
+            var usuario = new Usuario();
+            usuario.nmUsuario = req.body.nmUsuario;
+            usuario.sobrenomeUsuario = req.body.sobrenomeUsuario;
+            usuario.nrBanco = req.body.nrBanco;
+            usuario.nrAgencia = req.body.nrAgencia;
+            usuario.nrConta = req.body.nrConta;  
+            usuario.vlSaldo = req.body.vlSaldo; 
+            usuario.nrCPF = req.body.nrCPF
+            usuario.dsEmail = req.body.dsEmail
+
             if (req.body.dsSenha)
-                req.body.dsSenha = bcrypt.hashSync(req.body.dsSenha, 10);
+                usuario.dsSenha = bcrypt.hashSync(req.body.dsSenha, 10);
             else 
                 res.status(500).send(JSON.stringify({ success: false, erro:"Senha inválida" }));
 
-            Usuario.create(req.body)
+            usuario.save()
                 .then(x => { 
-                res.status(201).send({
-                    message: 'Usuario cadastrado com sucesso!'});
-            }).catch(e => {
-                res.status(400).send({
-                    message: 'Falha ao cadastrar o Usuario!',
-                    data: e
+                    res.status(201).send({
+                        message: 'Usuario cadastrado com sucesso!'});
+                }).catch(e => {
+                    res.status(400).send({
+                        message: 'Falha ao cadastrar o Usuario!',
+                        data: e
+                    });
                 });
-            });
         }
     };
     return usuarioService;
