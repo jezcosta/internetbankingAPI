@@ -1,9 +1,16 @@
 module.exports = (app) => {
     const { Transacao } = app.models;
     const { Favorecido } = app.models;
+    const { Conta } = app.models;
     const contaService = {
         getInformacoesConta(req, res) {
-         
+            /* Conta
+            .find({})
+            .then(data => {
+                res.status(200).send(data);
+            }).catch(e => {
+                res.status(400).send(e)
+            }); */
         },
         getFavorecidos(req, res) {
             /* Favorecido
