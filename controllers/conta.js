@@ -5,25 +5,22 @@ module.exports = (app) => {
 
     const contaService = {
         getInformacoesConta(req, res) {
-            /* Conta
-            .find({})
-            .then(data => {
-                res.status(200).send(data);
-            }).catch(e => {
-                res.status(400).send(e)
-            }); */
+            Conta.find({ usuario: req.userId })
+                .then(data => {
+                    res.status(200).send(data);
+                }).catch(e => {
+                    res.status(400).send(e)
+                });
         },
-
         salvaConta(req, res){
-          /*   var conta = new Conta();
+            var conta = new Conta();
             conta.usuario = req.body.usuario;
             conta.nrBanco = req.body.nrBanco;
             conta.nrAgencia = req.body.nrAgencia;
             conta.nrConta = req.body.nrConta;
             conta.vlSaldo = req.body.vlSaldo;
 
-            conta
-            .save()
+            conta.save()
             .then(x => { 
                 res.status(201).send({
                     message: 'Conta cadastrada com sucesso!'});
@@ -32,79 +29,46 @@ module.exports = (app) => {
                     message: 'Falha ao criar conta!',
                     data: e
                 });
-            }); */
-        },
-
-        getFavorecidos(req, res) {
-            /* Favorecido
-                .find({})
-                .then(data => {
-                    res.status(200).send(data);
-                }).catch(e => {
-                    res.status(400).send(e)
-                });    */        
+            });
         },
         salvaFavorecido(req, res) {
-              /*  var favorecido = new Favorecido();
-                favorecido.nmFavorecido = req.body.nmFavorecido;
-                favorecido.sobrenomeFavorecido = req.body.sobrenomeFavorecido;
-                favorecido.nrBanco = req.body.nrBanco;
-                favorecido.nrAgencia = req.body.nrAgencia;
-                favorecido.nrConta = req.body.nrConta;  
-                favorecido.nrCPF = req.body.nrCPF
-                favorecido.dsEmail = req.body.dsEmail
+            Conta.findOne({ usuario: req.userId })
+                .then(data => {
+                    var favorecidos = data.favorecidos;
 
-                favorecido
-                .save()
-                .then(x => { 
-                    res.status(201).send({
-                        message: 'Favorecido cadastrado com sucesso!'});
+                    if(favorecidos!=null) {
+                        var checkFavorecido = favorecidos.find(item => 
+                            item.agencia == req.body.agencia &&
+                            item.conta == req.body.conta
+                        );
+                    }
+
+                    if(checkFavorecido) {
+                        res.status(500).send({success:false, erro:'Favorecido já existente'});
+                    } else {
+                        Conta.findOneAndUpdate({ usuario: req.userId }, {
+                            $push: {
+                                favorecidos: req.body
+                            }
+                            }).then(data => {
+                                res.status(200).send({success: true});
+                            }).catch(e => {
+                                res.status(400).send(e)
+                            });
+                    }
                 }).catch(e => {
-                    res.status(400).send({
-                        message: 'Falha ao cadastrar o favorecido!',
-                        data: e
-                }); */
+                    res.status(400).send(e)
+                });
         },
-
-        atualizarFavorecido(){
-           /*  Favorecido
-            .findByIdAndUpdate(req.params.id, { 
-                $set: {
-                    nmFavorecido: req.body.nmFavorecido, 
-                    sobrenomeFavorecido: req.body.sobrenomeFavorecido, 
-                    nrBanco: req.body.nrBanco, 
-                    nrAgencia: req.body.nrAgencia, 
-                    nrConta: req.body.nrConta, 
-                    nrCPF: req.body.nrCPF, 
-                    dsEmail: req.body.dsEmail
-            }
-        }).then(x => {
-            res.status(200).send({
-                message: 'Favorecido atualizado com sucesso!'
-            });
-        }).catch(e => {
-            res.status(400).send({
-                message: 'Falha ao atualizar Favorecido',
-                data: e
-            });
-        }); */
+        deletarFavorecido(req, res){
+            Conta.findOneAndUpdate({ usuario: req.userId },
+                { $pull: { favorecidos: req.body }
+                }).then(data => {
+                    res.status(200).send({success: true});
+                }).catch(e => {
+                    res.status(400).send(e)
+                });
         },
-
-        deletarFavorecido(){
-      /*       Favorecido
-        .findOneAndRemove(req.params.id)
-        .then(x => {
-            res.status(200).send({
-                message: 'Favorecido removido com sucesso!'
-            });
-        }).catch(e => {
-            res.status(400).send({
-                message: 'Falha ao remover Favorecido',
-                data: e
-            });
-        }); */
-        },
-
         getExtrato(req, res) {
            /*  Transacao
                 .find({})
@@ -114,7 +78,6 @@ module.exports = (app) => {
                     res.status(400).send(e)
                 }); */
         },
-
         postExtrato(req, res) {
      /* var transacao = new Transacao();
             transacao.usuario = req.body.usuario;

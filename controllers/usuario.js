@@ -28,7 +28,6 @@ module.exports = (app) => {
             res.status(200).send({ auth: false, token: null });
         },
         getInfo(req, res) {
-            console.log(req.userId);
             usuario.findById(req.userId)   
                 .then(data => {
                     res.status(200).send(data);
@@ -48,10 +47,6 @@ module.exports = (app) => {
             var novoUsuario = new usuario();
             novoUsuario.nmUsuario = req.body.nmUsuario;
             novoUsuario.sobrenomeUsuario = req.body.sobrenomeUsuario;
-            novoUsuario.nrBanco = req.body.nrBanco;
-            novoUsuario.nrAgencia = req.body.nrAgencia;
-            novoUsuario.nrConta = req.body.nrConta;  
-            novoUsuario.vlSaldo = req.body.vlSaldo; 
             novoUsuario.nrCPF = req.body.nrCPF
             novoUsuario.dsEmail = req.body.dsEmail
 
