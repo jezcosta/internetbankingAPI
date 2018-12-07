@@ -3,16 +3,16 @@ module.exports = () => {
     const Schema = mongoose.Schema;
 
     const schema =  Schema({ 
-        nmUsuario: {type: String },
-        sobrenomeUsuario: {type: String},
-        nrBanco: {type: Number},
-        nrAgencia: {type: Number},
-        nrConta: {type: Number},
-        vlSaldo: {type: Number},
-        dsSenha: {type: String},
-        nrCPF: {type: String, unique: true },
-        dsEmail: {type: String}                            
+        nmUsuario: {type: String, required: true },
+        sobrenomeUsuario: {type: String, required: true},
+        nrBanco: {type: Number, required: true},
+        nrAgencia: {type: Number, required: true},
+        nrConta: {type: Number, required: true},
+        vlSaldo: {type: Number, required: true},
+        dsSenha: {type: String, required: true},
+        nrCPF: {type: String, unique: true, required: true },
+        dsEmail: {type: String, required: true}                            
     });
 
     return mongoose.model('Usuario', schema);
-}
+}   
