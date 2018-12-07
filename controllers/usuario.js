@@ -4,7 +4,7 @@ module.exports = (app) => {
     const bcrypt = require('bcrypt');
 
     const usuarioService = {
-        async login(req, res) {
+        login(req, res) {
             res.setHeader('Content-Type', 'application/json');
             const cpf = req.body.cpf;
             const senha = req.body.senha;
