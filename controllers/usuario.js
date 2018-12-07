@@ -29,7 +29,7 @@ module.exports = (app) => {
         },
         getInfo(req, res) {
             console.log(req.userId);
-            Usuario.findById(req.userId)   
+            usuario.findById(req.userId)   
                 .then(data => {
                     res.status(200).send(data);
                 }).catch(e => {
@@ -37,8 +37,7 @@ module.exports = (app) => {
                 });
         },
         listar(req, res) {
-            Usuario
-            .find({})
+            usuario.find({})
             .then(data => {
                 res.status(200).send(data);
             }).catch(e => {
@@ -46,22 +45,22 @@ module.exports = (app) => {
             });
         },
         adicionar(req, res) {
-            var usuario = new Usuario();
-            usuario.nmUsuario = req.body.nmUsuario;
-            usuario.sobrenomeUsuario = req.body.sobrenomeUsuario;
-            usuario.nrBanco = req.body.nrBanco;
-            usuario.nrAgencia = req.body.nrAgencia;
-            usuario.nrConta = req.body.nrConta;  
-            usuario.vlSaldo = req.body.vlSaldo; 
-            usuario.nrCPF = req.body.nrCPF
-            usuario.dsEmail = req.body.dsEmail
+            var novoUsuario = new usuario();
+            novoUsuario.nmUsuario = req.body.nmUsuario;
+            novoUsuario.sobrenomeUsuario = req.body.sobrenomeUsuario;
+            novoUsuario.nrBanco = req.body.nrBanco;
+            novoUsuario.nrAgencia = req.body.nrAgencia;
+            novoUsuario.nrConta = req.body.nrConta;  
+            novoUsuario.vlSaldo = req.body.vlSaldo; 
+            novoUsuario.nrCPF = req.body.nrCPF
+            novoUsuario.dsEmail = req.body.dsEmail
 
             if (req.body.dsSenha)
-                usuario.dsSenha = bcrypt.hashSync(req.body.dsSenha, 10);
+            novoUsuario.dsSenha = bcrypt.hashSync(req.body.dsSenha, 10);
             else 
                 res.status(500).send(JSON.stringify({ success: false, erro:"Senha inválida" }));
 
-            usuario.save()
+            novoUsuario.save()
                 .then(x => { 
                     res.status(201).send({
                         message: 'Usuario cadastrado com sucesso!'});
