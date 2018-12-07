@@ -13,8 +13,22 @@ module.exports = (app) => {
             res.send("Salva o Favorecido");
         },
         getExtrato(req, res) {
-            //chama models/regras de negocio aqui
-            res.send("Envia lista de extrato");
+         /*    var transacao = new Transacao();
+            transacao.usuario = req.body.usuario;
+            transacao.vlTransacao = req.body.vlTransacao;
+            transacao.tpTransacao = req.body.tpTransacao;
+
+            transacao
+            .save()
+            .then(x => { 
+                res.status(201).send({
+                    message: 'Transacao realizada com sucesso!'});
+            }).catch(e => {
+                res.status(400).send({
+                    message: 'Falha ao realizar transação !',
+                    data: e
+                });
+            }); */
         }
     };
     return contaService;
