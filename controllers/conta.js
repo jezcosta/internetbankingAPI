@@ -2,6 +2,7 @@ module.exports = (app) => {
     const { Transacao } = app.models;
     const { Favorecido } = app.models;
     const { Conta } = app.models;
+    
     const contaService = {
         getInformacoesConta(req, res) {
             /* Conta
@@ -12,6 +13,28 @@ module.exports = (app) => {
                 res.status(400).send(e)
             }); */
         },
+
+        salvaConta(req, res){
+          /*   var conta = new Conta();
+            conta.usuario = req.body.usuario;
+            conta.nrBanco = req.body.nrBanco;
+            conta.nrAgencia = req.body.nrAgencia;
+            conta.nrConta = req.body.nrConta;
+            conta.vlSaldo = req.body.vlSaldo;
+
+            conta
+            .save()
+            .then(x => { 
+                res.status(201).send({
+                    message: 'Conta cadastrada com sucesso!'});
+            }).catch(e => {
+                res.status(400).send({
+                    message: 'Falha ao criar conta!',
+                    data: e
+                });
+            }); */
+        },
+
         getFavorecidos(req, res) {
             /* Favorecido
                 .find({})
