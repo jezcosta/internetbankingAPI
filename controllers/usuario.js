@@ -1,20 +1,19 @@
 module.exports = (app) => {
     const jwt = require('jsonwebtoken');
-    const Usuario = app.models.Usuario;
+    const { usuario } = app.models;
     const bcrypt = require('bcrypt');
 
     const usuarioService = {
-        login(req, res) {
+        async login(req, res) {
             res.setHeader('Content-Type', 'application/json');
             const cpf = req.body.cpf;
             const senha = req.body.senha;
 
-            Usuario.findOne({ nrCPF: cpf })
+            usuario.findOne({ nrCPF: cpf })
                 .then(data => {
-                    const usuario = data.toObject();
-                    console.log(usuario);
-                    if (usuario && bcrypt.compareSync(senha, usuario.dsSenha)) {
-                        const token = jwt.sign({ usuarioId: usuario._id }, process.env.SECRET, {
+                    const usuarioRetorno = data.toObject();
+                    if (usuarioRetorno && bcrypt.compareSync(senha, usuarioRetorno.dsSenha)) {
+                        const token = jwt.sign({ usuarioId: usuarioRetorno._id }, process.env.SECRET, {
                             expiresIn: 600
                         });
                         res.status(200).send(JSON.stringify({ success: true, token: token }));
