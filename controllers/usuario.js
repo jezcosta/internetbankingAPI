@@ -56,7 +56,7 @@ module.exports = (app) => {
             novoUsuario.dsEmail = req.body.dsEmail
 
             if (req.body.dsSenha)
-            novoUsuario.dsSenha = bcrypt.hashSync(req.body.dsSenha, 10);
+                novoUsuario.dsSenha = bcrypt.hashSync(req.body.dsSenha, 10);
             else 
                 res.status(500).send(JSON.stringify({ success: false, erro:"Senha inválida" }));
 
