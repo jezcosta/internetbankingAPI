@@ -1,49 +1,61 @@
-var Usuario = require('../models/usuario')
+const consign = require('consign');
+const express = require('express');
+const path = require('path');
+const bcrypt = require('bcrypt');
+
+const app = express();
+
+consign({})
+  .include('models')
+  .into(app)
+;
+
+const { usuario } = app.models;
 
 var mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/db_internetBanking')
+mongoose.connect('mongodb://localhost:27017/api-banking')
 
 var usuarios = [
-    new Usuario({
+    new usuario({
         nmUsuario: "Andrey",
         sobrenomeUsuario: "Lemos",
-        dsSenha: "alemos123",
+        dsSenha: bcrypt.hashSync("alemos123", 10),
         nrCPF: "12312312312",
         dsEmail: "alemos@hotmail.com"      
     }),
-    new Usuario({
+    new usuario({
         nmUsuario: "Cynthia",
         sobrenomeUsuario: "Mori",
-        dsSenha: "cmori123",
+        dsSenha: bcrypt.hashSync("cmori123", 10),
         nrCPF: "23423423423",
         dsEmail: "cmori@hotmail.com" 
     }),
-    new Usuario({
+    new usuario({
         nmUsuario: "Dannyel",
         sobrenomeUsuario: "Kayke",
-        dsSenha: "dkayke123",
+        dsSenha: bcrypt.hashSync("dkayke123", 10),
         nrCPF: "34534534534",
         dsEmail: "dkayke@hotmail.com"      
     }),
-    new Usuario({
+    new usuario({
         nmUsuario: "Giovanni",
         sobrenomeUsuario: "Oliveira",
-        dsSenha: "goliveira123",
+        dsSenha: bcrypt.hashSync("goliveira123", 10),
         nrCPF: "45645645645",
         dsEmail: "goliveira@hotmail.com"      
     }),
-    new Usuario({
+    new usuario({
         nmUsuario: "Jéssica",
         sobrenomeUsuario: "Costa",
-        dsSenha: "jcosta123",
+        dsSenha: bcrypt.hashSync("jcosta123", 10),
         nrCPF: "56756756756",
         dsEmail: "jcosta@hotmail.com"      
     }),
-    new Usuario({
+    new usuario({
         nmUsuario: "Jéssica",
         sobrenomeUsuario: "Maria",
-        dsSenha: "jmaria123",
+        dsSenha: bcrypt.hashSync("jmaria123", 10),
         nrCPF: "67867867867",
         dsEmail: "jmaria@hotmail.com"      
     })
