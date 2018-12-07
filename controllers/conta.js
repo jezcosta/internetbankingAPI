@@ -2,7 +2,7 @@ module.exports = (app) => {
     const { Transacao } = app.models;
     const { Favorecido } = app.models;
     const { Conta } = app.models;
-    
+
     const contaService = {
         getInformacoesConta(req, res) {
             /* Conta
@@ -133,10 +133,6 @@ module.exports = (app) => {
                 });
             }); */
         },
-
-
-
-
     };
     return contaService;
 };
