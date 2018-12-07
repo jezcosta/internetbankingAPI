@@ -2,7 +2,7 @@ module.exports = () => {
     const mongoose = require('mongoose');
     const Schema = mongoose.Schema;
 
-    const Usuario =  Schema({ 
+    const schema =  Schema({ 
         nmUsuario: {type: String },
         sobrenomeUsuario: {type: String},
         nrBanco: {type: Number},
@@ -14,5 +14,5 @@ module.exports = () => {
         dsEmail: {type: String}                            
     });
 
-    return mongoose.model('Usuario', Usuario);
+    return mongoose.model('Usuario', schema);
 }
