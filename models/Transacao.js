@@ -1,19 +1,14 @@
+'use strict'
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Model Transacao
-// Definindo o Model
-const TransacaoSchema =  mongoose.Schema({ 
-    tipoTransacao: {type: String, required: true},
-    dtTransacao  : {type: Date, default: Date.now()},
-    nmBeneficiario: {type: Schema.Types.ObjectId, ref: 'beneficiarios'},
-    nrBanco: {type: Number, required: true},
-    nrConta: {type: Number, required: true},
-    nrAgencia: {type: Number, required: true},
-    vlTransacao: {type: Number, required: true},
-    nrCPF: {type: Number, required: true},
-    dsEmail: {type: String, required: true}                            
+const schema =  new Schema({ 
+    usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'},   
+    vlTransacao: {type: String},
+    dtTransacao: {type: Date, default: Date.now()}, 
+    tpTransacao: {type: String, enum: ["debito", "credito"]}
 });
 
-// Collection
-mongoose.model('transacao', TransacaoSchema);
+
+module.exports = mongoose.model('Transacao', schema); 

@@ -5,11 +5,13 @@ const path = require('path');
 const consign = require('consign');
 const helmet = require('helmet');
 const cors = require('cors');
-const conn = require('./models/connection.js');
+global.mongoose = require('mongoose');
 const error = require('./middlewares/erros');
 const port = process.env.PORT || 3000;
-
+const mongoHost = process.env.DBHOST || 'mongodb://localhost:27017/api-banking';
 const app = express();
+
+mongoose.connect(mongoHost);
 
 const options = {
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
@@ -25,7 +27,7 @@ app.use(helmet());
 app.use(bodyparser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-consign({})
+consign({ cwd: path.join(__dirname) })
   .include('models')
   .then('controllers')
   .then('middlewares')
@@ -34,6 +36,6 @@ consign({})
 ;
 
 app.use(error.notFound);
-app.use(error.serverError);
+// app.use(error.serverError);
 
 app.listen(port, () => console.log('Server running'))
