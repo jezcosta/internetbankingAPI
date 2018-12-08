@@ -29,13 +29,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 consign({ cwd: path.join(__dirname) })
   .include('models')
-  .then('controllers')
   .then('middlewares')
+  .then('controllers')
   .then('routes')
   .into(app)
 ;
 
 app.use(error.notFound);
-// app.use(error.serverError);
+app.use(error.serverError);
 
 app.listen(port, () => console.log('Server running'))

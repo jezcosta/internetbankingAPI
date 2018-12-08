@@ -1,15 +1,15 @@
 module.exports = (app) => {
-    const { Transacao } = app.models;
-    const { Favorecido } = app.models;
-    const { Conta } = app.models;
+    const { Transacao, Conta } = app.models;
+    const { logs, retorno } = app.middlewares;
 
     const contaService = {
         getInformacoesConta(req, res) {
             Conta.find({ usuario: req.userId })
                 .then(data => {
-                    res.status(200).send(data);
-                }).catch(e => {
-                    res.status(400).send(e)
+                    retorno.envia(res,200,true,null,null,data);
+                }).catch(erro => {
+                    logs.log('error', erro);
+                    retorno.envia(res,400,false,erro,'Falha ao buscar informações da conta',null);
                 });
         },
         salvaConta(req, res){
@@ -21,15 +21,12 @@ module.exports = (app) => {
             conta.vlSaldo = req.body.vlSaldo;
 
             conta.save()
-            .then(x => { 
-                res.status(201).send({
-                    message: 'Conta cadastrada com sucesso!'});
-            }).catch(e => {
-                res.status(400).send({
-                    message: 'Falha ao criar conta!',
-                    data: e
+                .then(x => { 
+                    retorno.envia(res,200,true,null,null,{mensagem: 'Conta cadastrada com sucesso!'});
+                }).catch(erro => {
+                    logs.log('error', erro);
+                    retorno.envia(res,400,false,erro,'Falha ao criar conta!',null);
                 });
-            });
         },
         salvaFavorecido(req, res) {
             Conta.findOne({ usuario: req.userId })
@@ -44,29 +41,30 @@ module.exports = (app) => {
                     }
 
                     if(checkFavorecido) {
-                        res.status(500).send({success:false, erro:'Favorecido já existente'});
+                        res.status(400).send({success:false, erro:'Favorecido já existente'});
                     } else {
                         Conta.findOneAndUpdate({ usuario: req.userId }, {
-                            $push: {
-                                favorecidos: req.body
-                            }
+                            $push: {favorecidos: req.body}
                             }).then(data => {
-                                res.status(200).send({success: true});
-                            }).catch(e => {
-                                res.status(400).send(e)
+                                retorno.envia(res,200,true,'','',null);
+                            }).catch(erro => {
+                                logs.log('error', erro);
+                                retorno.envia(res,400,false,erro,'Falha ao salvar favorecido',null);
                             });
                     }
-                }).catch(e => {
-                    res.status(400).send(e)
+                }).catch(erro => {
+                    logs.log('error', erro);
+                    retorno.envia(res,400,false,erro,'Falha ao salvar favorecido',null);
                 });
         },
         deletarFavorecido(req, res){
             Conta.findOneAndUpdate({ usuario: req.userId },
                 { $pull: { favorecidos: req.body }
                 }).then(data => {
-                    res.status(200).send({success: true});
-                }).catch(e => {
-                    res.status(400).send(e)
+                    retorno.envia(res,200,true,'','',null);
+                }).catch(erro => {
+                    logs.log('error', erro);
+                    retorno.envia(res,400,false,erro,'Falha ao deletar favorecido',null);
                 });
         },
         getExtrato(req, res) {
