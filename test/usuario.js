@@ -1,5 +1,7 @@
+const bcrypt = require('bcrypt');
 var supertest = require('supertest')
 var should = require('should')
+var mongoHost = process.env.DBHOST || 'mongodb://localhost:27017/api-banking';
 
 var server = supertest.agent('localhost:3000')
 
@@ -8,9 +10,10 @@ describe("Testes de usuário", function(){
     describe("Testes de login", function(){
 
         it("Tentativa de login válida", function(done){
+            console.log(bcrypt.hashSync("alemos123", 10))
             server
             .post("/api/v1/usuario/logon")
-            .send({"cpf": "123","senha": "123"})
+            .send({"cpf": "12312312312","senha": "alemos123"})
             .expect(200) 
             .end(function(err,res){
                 res.status.should.equal(200)
@@ -25,9 +28,9 @@ describe("Testes de usuário", function(){
             server
             .post("/api/v1/usuario/logon")
             .send({"cpf": "invalido","senha": "invalida"})
-            .expect(500) 
+            .expect(400) 
             .end(function(err,res){
-                res.status.should.equal(500)
+                res.status.should.equal(400)
                 res.body.success.should.equal(false)
                 res.body.should.not.have.property('token')
                 if (err) return done(err)

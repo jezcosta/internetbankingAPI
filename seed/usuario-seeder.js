@@ -2,6 +2,7 @@ const consign = require('consign');
 const express = require('express');
 const path = require('path');
 const bcrypt = require('bcrypt');
+const mongoHost = process.env.DBHOST || 'mongodb://localhost:27017/api-banking';
 
 const app = express();
 
@@ -14,7 +15,7 @@ const { usuario } = app.models;
 
 var mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost:27017/api-banking')
+mongoose.connect(mongoHost)
 
 var usuarios = [
     new usuario({
