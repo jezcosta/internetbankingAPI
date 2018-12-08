@@ -2,10 +2,10 @@ module.exports = (app) => {
     const jwt = require('jsonwebtoken');
     const { usuario } = app.models;
     const bcrypt = require('bcrypt');
+    const { logs, retorno } = app.middlewares;
 
     const usuarioService = {
         async login(req, res) {
-            res.setHeader('Content-Type', 'application/json');
             const cpf = req.body.cpf;
             const senha = req.body.senha;
 
@@ -16,31 +16,34 @@ module.exports = (app) => {
                         const token = jwt.sign({ usuarioId: usuarioRetorno._id }, process.env.SECRET, {
                             expiresIn: 600
                         });
-                        res.status(200).send(JSON.stringify({ success: true, token: token }));
+                        retorno.envia(res,200,true,null,null,{ success: true, token: token });
                     } else {
-                        res.status(500).send(JSON.stringify({ success: false, erro:"Login Inválido" }));
+                        retorno.envia(res,400,false,null,null,{ success: false, erro:"Login Inválido" });
                     }
-                }).catch(e => {
-                    res.status(400).send(e);
+                }).catch(erro => {
+                    logs.log('error', erro);
+                    retorno.envia(res,400,false,null,null,erro);
                 });
         },
         logout(req, res) {
-            res.status(200).send({ auth: false, token: null });
+            retorno.envia(res,200,true,null,null,{ success: true, auth: false, token: null });
         },
         getInfo(req, res) {
-            usuario.findById(req.userId)   
+            usuario.findById(req.userId, { dsSenha: 0 })   
                 .then(data => {
-                    res.status(200).send(data);
-                }).catch(e => {
-                    res.status(400).send(e);
+                    retorno.envia(res,200,false,null,null,data);
+                }).catch(erro => {
+                    logs.log('error', erro);
+                    retorno.envia(res,400,false,null,null,erro);
                 });
         },
         listar(req, res) {
-            usuario.find({})
+            usuario.find({}, { dsSenha: 0 })
             .then(data => {
-                res.status(200).send(data);
-            }).catch(e => {
-                res.status(400).send(e)
+                retorno.envia(res,200,true,null,null,data);
+            }).catch(erro => {
+                logs.log('error', erro);
+                retorno.envia(res,400,false,null,null,erro);
             });
         },
         adicionar(req, res) {
@@ -50,21 +53,20 @@ module.exports = (app) => {
             novoUsuario.nrCPF = req.body.nrCPF
             novoUsuario.dsEmail = req.body.dsEmail
 
-            if (req.body.dsSenha)
+            if (req.body.dsSenha) {
                 novoUsuario.dsSenha = bcrypt.hashSync(req.body.dsSenha, 10);
-            else 
-                res.status(500).send(JSON.stringify({ success: false, erro:"Senha inválida" }));
 
-            novoUsuario.save()
-                .then(x => { 
-                    res.status(201).send({
-                        message: 'Usuario cadastrado com sucesso!'});
-                }).catch(e => {
-                    res.status(400).send({
-                        message: 'Falha ao cadastrar o Usuario!',
-                        data: e
+                novoUsuario.save()
+                    .then(x => { 
+                        retorno.envia(res,200,true,'','Usuario cadastrado com sucesso!',null);
+                    }).catch(erro => {
+                        logs.log('error', erro);
+                        retorno.envia(res,400,false,erro,'Falha ao cadastrar o Usuario!',null);
                     });
-                });
+            } else {
+                logs.log('error', `"${req.method} ${req.url}" 400 (erro: Senha invalida)`);
+                retorno.envia(res,400,false,null, null,{ success: false, erro:"Senha inválida" });
+            }
         }
     };
     return usuarioService;
