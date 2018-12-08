@@ -1,11 +1,11 @@
 module.exports = (app) => {
     const jwt = require('jsonwebtoken');
-    const { usuario } = app.models;
+    const { usuario, Conta } = app.models;
     const bcrypt = require('bcrypt');
     const { logs, retorno } = app.middlewares;
 
     const usuarioService = {
-        async login(req, res) {
+        login(req, res) {
             const cpf = req.body.cpf;
             const senha = req.body.senha;
 
@@ -28,13 +28,41 @@ module.exports = (app) => {
         logout(req, res) {
             retorno.envia(res,200,true,null,null,{ success: true, auth: false, token: null });
         },
-        getInfo(req, res) {
+        getInformacoes(req, res) {
             usuario.findById(req.userId, { dsSenha: 0 })   
                 .then(data => {
                     retorno.envia(res,200,false,null,null,data);
                 }).catch(erro => {
                     logs.log('error', erro);
                     retorno.envia(res,400,false,null,null,erro);
+                });
+        },
+        buscarUsuario(req, res) {
+            Conta.findOne({ nrConta: req.body.conta })
+                .then(dataConta => {
+                    if(dataConta) {
+                        usuario.findById(dataConta.usuario, { dsSenha: 0 })   
+                            .then(dataUser => {
+                                var dados = {
+                                    conta: dataConta.nrConta,
+                                    agencia: dataConta.nrAgencia,
+                                    banco: dataConta.nrBanco,
+                                    nome: dataUser.nmUsuario,
+                                    sobrenome: dataUser.sobrenomeUsuario,
+                                    cpf: dataUser.nrCPF,
+                                    email: dataUser.dsEmail
+                                }
+                                retorno.envia(res,200,false,null,null,dados);
+                            }).catch(erro => {
+                                logs.log('error', erro);
+                                retorno.envia(res,400,false,null,null,erro);
+                            });
+                    } else {
+                        retorno.envia(res,400,false,'','Nenhum usuário encontrado',null);
+                    }
+                }).catch(erro => {
+                    logs.log('error', erro);
+                    retorno.envia(res,400,false,erro,'Falha ao buscar Usuario',null);
                 });
         },
         listar(req, res) {
