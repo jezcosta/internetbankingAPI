@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const { Transacao, Conta } = app.models;
+    const { Conta, Transacao } = app.models;
     const { logs, retorno } = app.middlewares;
 
     const contaService = {
@@ -66,34 +66,7 @@ module.exports = (app) => {
                     logs.log('error', erro);
                     retorno.envia(res,400,false,erro,'Falha ao deletar favorecido',null);
                 });
-        },
-        getExtrato(req, res) {
-           /*  Transacao
-                .find({})
-                .then(data => {
-                    res.status(200).send(data);
-                }).catch(e => {
-                    res.status(400).send(e)
-                }); */
-        },
-        postExtrato(req, res) {
-     /* var transacao = new Transacao();
-            transacao.usuario = req.body.usuario;
-            transacao.vlTransacao = req.body.vlTransacao;
-            transacao.tpTransacao = req.body.tpTransacao;
-
-            transacao
-            .save()
-            .then(x => { 
-                res.status(201).send({
-                    message: 'Transacao realizada com sucesso!'});
-            }).catch(e => {
-                res.status(400).send({
-                    message: 'Falha ao realizar transação !',
-                    data: e
-                });
-            }); */
-        },
+        }
     };
     return contaService;
 };
