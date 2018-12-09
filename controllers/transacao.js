@@ -74,6 +74,11 @@ module.exports = (app) => {
                 }
             }
 
+        },
+        listar(req, res) {
+            // const { filtroTipo, filtroDataDe, filtroDataAte, filtroDias, filtroConta } = req.body;
+
+            // transacao.find()
         }
     };
     return transacaoService;
