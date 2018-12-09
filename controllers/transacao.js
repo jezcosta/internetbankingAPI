@@ -2,7 +2,7 @@ module.exports = (app) => {
     const { Conta, transacao } = app.models;
     const { logs, retorno } = app.middlewares;
     const mongoose = require('mongoose');
-    const Fawn = require("Fawn");
+    const Fawn = require("fawn");
     Fawn.init(mongoose);
     
     const transacaoService = {
