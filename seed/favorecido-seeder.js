@@ -73,13 +73,13 @@ novosFavorecidos("67867867867",
     true)
 
 
-function novosFavorecidos(cpf,favorecidos,last){
+function novosFavorecidos(cpf,favorecidos,ultimo){
     usuario.findOne({ nrCPF: cpf }).then(data => {
         var usuarioRetorno = data.toObject();
         Conta.findOneAndUpdate({ usuario: usuarioRetorno._id }, {
             $push: {favorecidos: favorecidos}
-        }).then({
-            if(last){
+        }).then(dados => {
+            if(ultimo){
                 exit()
             }
         })
