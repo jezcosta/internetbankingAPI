@@ -74,6 +74,28 @@ module.exports = (app) => {
                 }
             }
 
+        },
+        listar(req, res) {
+            const { filtroTipo, filtroDataDe, filtroDataAte, filtroConta } = req.body;
+
+
+            var filtro = '"usuario": "' + req.userId + '",';
+            filtroTipo ? filtro += '"transacoes.tpTransacao": "' + filtroTipo + '",' : null;
+            filtroDataDe ? filtro += '"transacoes.dtTransacao": {"$gte": "' + filtroDataDe + '"},' : null;
+            filtroDataAte ? filtro += '"transacoes.dtTransacao": {"$lt": "' + filtroDataAte + '"},' : null;
+            filtroConta ? filtro += '"transacoes.contaRef": "' + filtroConta + '",' : null;
+
+            Conta.findOne(JSON.parse('{' + filtro.replace(/,+$/,'') + '}'))
+                .then(dados => {
+                    if(dados) {
+                        retorno.envia(res,200,true,null,null,dados.transacoes);
+                    } else {
+                        retorno.envia(res,200,true,null,null,[]);
+                    }
+                })
+                .catch(erro => {
+                    retorno.envia(res,400,false,null,'Erro ao buscar transações',null);
+                })
         }
     };
     return transacaoService;
