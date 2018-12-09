@@ -1,6 +1,22 @@
-module.exports = () => {
+module.exports = (app) => {
     const mongoose = require('mongoose');
     const Schema = mongoose.Schema;
+
+    const favorecido = Schema({
+        cpf: {type: String},
+        conta: {type: String},
+        agencia: {type: String},
+        banco: {type: String},
+        nome: {type: String}
+    })
+
+    const transacao = Schema({
+        tpTransacao: {type: String, enum: ["debito", "credito"]},
+        vlTransacao: {type: Number},
+        dtTransacao: {type: Date, default: Date.now},
+        contaRef: {type: Number},
+        observacao: {type: String}
+    })
 
     const schema =  Schema({ 
         usuario: {type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true},
@@ -8,7 +24,8 @@ module.exports = () => {
         nrAgencia: {type: Number, required: true},
         nrConta: {type: Number, unique: true, required: true},
         vlSaldo: {type: Number, required: true},
-        favorecidos: {type: Array}              
+        favorecidos: [favorecido],
+        transacoes: [transacao]
     });
 
     return mongoose.model('Conta', schema);

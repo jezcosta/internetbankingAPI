@@ -6,5 +6,5 @@ module.exports = (app) => {
     app.post('/api/v1/conta/salvar', autenticacao.verificaJWT, conta.salvaConta);
     app.post('/api/v1/conta/criar-favorecido', autenticacao.verificaJWT, conta.salvaFavorecido);
     app.post('/api/v1/conta/remover-favorecido', autenticacao.verificaJWT, conta.deletarFavorecido);
-    app.post('/api/v1/extrato', autenticacao.verificaJWT, conta.getExtrato);
+    // app.post('/api/v1/extrato', autenticacao.verificaJWT, conta.getExtrato);
 };
