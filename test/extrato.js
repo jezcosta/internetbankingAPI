@@ -12,17 +12,11 @@ describe("Testes de extrato", function(){
             .send({"cpf": "12312312312","senha": "alemos123"})
             .end(function(errTk,resTk){
                 server
-                .post("/api/v1/conta")
+                .post("/api/v1/transacoes/extrato")
                 .set({"x-access-token": resTk.body.token})
                 .expect(200) 
                 .end(function(err,res){
                     res.status.should.equal(200)
-                    res.body = res.body[0]
-                    res.body.should.have.property('nrBanco')
-                    res.body.should.have.property('nrAgencia')
-                    res.body.should.have.property('nrConta')
-                    res.body.should.have.property('vlSaldo')
-                    if (err) return done(err)
                     done();
                 })
             })
