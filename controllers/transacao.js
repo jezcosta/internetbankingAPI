@@ -7,7 +7,7 @@ module.exports = (app) => {
     
     const transacaoService = {
         async transferir(req, res) {
-            const { contaOrigem, agenciaOrigem, contaDestino, agenciaDestino, valor } = req.body;
+            const { contaOrigem, agenciaOrigem, contaDestino, agenciaDestino, valor, observacao } = req.body;
             const task = Fawn.Task();
             var dadosContaOrigem, dadosContaDestino;
             var saldoSuficiente = true;
@@ -36,8 +36,29 @@ module.exports = (app) => {
                     });
 
                 if(dadosContaOrigem && dadosContaDestino) {
-                    task.update("Conta", { nrConta: contaOrigem, nrAgencia: agenciaOrigem }, {$inc: {vlSaldo: -valor}})
-                        .update("Conta", { nrConta: contaDestino, nrAgencia: agenciaDestino }, {$inc: {vlSaldo: valor}})
+
+                    const historicoOrigem = new transacao({
+                        tpTransacao: "debito",
+                        vlTransacao: valor,
+                        contaRef: contaDestino,
+                        agenciaRef: agenciaDestino,
+                        observacao: observacao,
+                        vlAnterior: dadosContaOrigem.vlSaldo,
+                        vlAtual: dadosContaOrigem.vlSaldo - valor 
+                    });
+
+                    const historicoDestino = new transacao({
+                        tpTransacao: "credito",
+                        vlTransacao: valor,
+                        contaRef: contaOrigem,
+                        agenciaRef: agenciaOrigem,
+                        observacao: observacao,
+                        vlAnterior: dadosContaDestino.vlSaldo,
+                        vlAtual: dadosContaDestino.vlSaldo + valor 
+                    });
+
+                    task.update("Conta", { nrConta: contaOrigem, nrAgencia: agenciaOrigem }, {$inc: {vlSaldo: -valor}, $push: {transacoes: historicoOrigem}})
+                        .update("Conta", { nrConta: contaDestino, nrAgencia: agenciaDestino }, {$inc: {vlSaldo: valor}, $push: {transacoes: historicoDestino}})
                         .run({ useMongoose: true })
                         .then(function(results){
                             retorno.envia(res,200,true,null,'Transferência Realizada com Sucesso',null);

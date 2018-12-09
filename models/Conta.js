@@ -15,6 +15,7 @@ module.exports = (app) => {
         vlTransacao: {type: Number},
         dtTransacao: {type: Date, default: Date.now},
         contaRef: {type: Number},
+        agenciaRef: {type: Number},
         observacao: {type: String}
     })
 
