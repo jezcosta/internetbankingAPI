@@ -17,57 +17,24 @@ var mongoose = require('mongoose')
 
 mongoose.connect(mongoHost)
 
-var usuarios = [
-    new usuario({
-        nmUsuario: "Andrey",
-        sobrenomeUsuario: "Lemos",
-        dsSenha: bcrypt.hashSync("alemos123", 10),
-        nrCPF: "12312312312",
-        dsEmail: "alemos@hotmail.com"      
-    }),
-    new usuario({
-        nmUsuario: "Cynthia",
-        sobrenomeUsuario: "Mori",
-        dsSenha: bcrypt.hashSync("cmori123", 10),
-        nrCPF: "23423423423",
-        dsEmail: "cmori@hotmail.com" 
-    }),
-    new usuario({
-        nmUsuario: "Dannyel",
-        sobrenomeUsuario: "Kayke",
-        dsSenha: bcrypt.hashSync("dkayke123", 10),
-        nrCPF: "34534534534",
-        dsEmail: "dkayke@hotmail.com"      
-    }),
-    new usuario({
-        nmUsuario: "Giovanni",
-        sobrenomeUsuario: "Oliveira",
-        dsSenha: bcrypt.hashSync("goliveira123", 10),
-        nrCPF: "45645645645",
-        dsEmail: "goliveira@hotmail.com"      
-    }),
-    new usuario({
-        nmUsuario: "Jéssica",
-        sobrenomeUsuario: "Costa",
-        dsSenha: bcrypt.hashSync("jcosta123", 10),
-        nrCPF: "56756756756",
-        dsEmail: "jcosta@hotmail.com"      
-    }),
-    new usuario({
-        nmUsuario: "Jéssica",
-        sobrenomeUsuario: "Maria",
-        dsSenha: bcrypt.hashSync("jmaria123", 10),
-        nrCPF: "67867867867",
-        dsEmail: "jmaria@hotmail.com"      
+novoUsuario("Andrey", "Lemos", "alemos123", "12312312312", "alemos@hotmail.com")
+novoUsuario("Cynthia", "Mori", "cmori123", "23423423423", "cmori@hotmail.com")
+novoUsuario("Dannyel", "Kayke", "dkayke123", "34534534534", "dkayke@hotmail.com")
+novoUsuario("Giovanni", "Oliveira", "goliveira123", "45645645645", "goliveira@hotmail.com")
+novoUsuario("Jéssica", "Costa", "jcosta123", "56756756756", "jcosta@hotmail.com")
+novoUsuario("Jéssica", "Maria", "jmaria123", "67867867867", "jmaria@hotmail.com", true)
+
+function novoUsuario(nome,sobrenome,senha,cpf,email,ultimo){
+    let userTemp = new usuario({
+        nmUsuario: nome,
+        sobrenomeUsuario: sobrenome,
+        dsSenha: bcrypt.hashSync(senha, 10),
+        nrCPF: cpf,
+        dsEmail: email      
     })
-]
 
-var done = 0
-
-for (var i = 0; i < usuarios.length; i++){
-    usuarios[i].save(function(err, res){
-        done++
-        if(done === usuarios.length){
+    userTemp.save(function(){
+        if(ultimo){
             exit()
         }
     })
