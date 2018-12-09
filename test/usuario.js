@@ -10,7 +10,6 @@ describe("Testes de usuário", function(){
     describe("Testes de login", function(){
 
         it("Tentativa de login válida", function(done){
-            console.log(bcrypt.hashSync("alemos123", 10))
             server
             .post("/api/v1/usuario/logon")
             .send({"cpf": "12312312312","senha": "alemos123"})
@@ -53,18 +52,6 @@ describe("Testes de usuário", function(){
 
     describe("Testes de logout", function(){
 
-        it("Tentativa de logout inválida", function(done){
-            server
-            .post("/api/v1/usuario/logout")
-            .expect(500)
-            .end(function(err,res){
-                res.status.should.equal(500)
-                res.body.success.should.equal(false)
-                if (err) return done(err)
-                done()
-            })
-        })
-
         it("Chamada de URL incorreta no logout", function(done){
             server
             .post("/api/v1/usuario/logou")
@@ -79,33 +66,40 @@ describe("Testes de usuário", function(){
 
     describe("Testes de informações de usuários", function(){
 
-        it("Tentativa váliida de obtenção de dados de usuário", function(done){
+        it("Tentativa válida de obtenção de dados de usuário", function(done){
+
             server
-            .post("/api/v1/usuario")
-            .send({"idUsuario": 1})
-            .expect(200)
-            .end(function(err,res){
-                res.status.should.equal(200)
-                res.body.success.should.equal(true)
-                res.body.should.have.property("nome")
-                res.body.should.have.property("email")
-                res.body.should.have.property("cpf")
-                if (err) return done(err)
-                done()
+            .post("/api/v1/usuario/logon")
+            .send({"cpf": "12312312312","senha": "alemos123"})
+            .end(function(errTk,resTk){
+                server
+                .post("/api/v1/usuario")
+                .set({"x-access-token": resTk.body.token})
+                .expect(200)
+                .end(function(err,res){
+                    res.status.should.equal(200)
+                    res.body.should.have.property("nmUsuario")
+                    res.body.should.have.property("sobrenomeUsuario")
+                    res.body.should.have.property("dsEmail")
+                    res.body.should.have.property("nrCPF")
+                    if (err) return done(err)
+                    done()
+                })
             })
+            
         })
 
         it("Tentativa inváliida de obtenção de dados de usuário", function(done){
             server
             .post("/api/v1/usuario")
-            .send({"idUsuario": "eraPraSerID"})
+            .set({"x-access-token": "esteNaoeUmTokenValido"})
             .expect(500)
             .end(function(err,res){
                 res.status.should.equal(500)
-                res.body.success.should.equal(false)
-                res.body.should.not.have.property("nome")
-                res.body.should.not.have.property("email")
-                res.body.should.not.have.property("cpf")
+                res.body.should.not.have.property("nmUsuario")
+                res.body.should.not.have.property("sobrenomeUsuario")
+                res.body.should.not.have.property("dsEmail")
+                res.body.should.not.have.property("nrCPF")
                 if (err) return done(err)
                 done()
             })
@@ -114,7 +108,7 @@ describe("Testes de usuário", function(){
         it("Tentativa de obtenção de dados de usuário em URL incorreta", function(done){
             server
             .post("/api/v1/usuari")
-            .send({"idUsuario": 1})
+            .set({"x-access-token": "esteNaoeUmTokenValido"})
             .expect(404)
             .end(function(err,res){
                 res.status.should.equal(404)
