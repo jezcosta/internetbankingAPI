@@ -11,6 +11,7 @@ module.exports = (app) => {
             const task = Fawn.Task();
             var dadosContaOrigem, dadosContaDestino;
             var saldoSuficiente = true;
+            valor = parseFloat(valor);
 
             await Conta.findOne({ nrConta: contaOrigem, nrAgencia: agenciaOrigem })
                 .then((dados) => {
@@ -94,6 +95,7 @@ module.exports = (app) => {
                     }
                 })
                 .catch(erro => {
+                    logs.log('error', erro);
                     retorno.envia(res,400,false,null,'Erro ao buscar transações',null);
                 })
         }
