@@ -11,13 +11,13 @@ module.exports = (app) => {
             const task = Fawn.Task();
             var dadosContaOrigem, dadosContaDestino;
             var saldoSuficiente = true;
-            valor = parseFloat(valor);
+            var valorParse = parseFloat(valor);
 
             await Conta.findOne({ nrConta: contaOrigem, nrAgencia: agenciaOrigem })
                 .then((dados) => {
                     if(dados) {
                         dadosContaOrigem = dados;
-                        if((dadosContaOrigem.vlSaldo - valor) < 0) {
+                        if((dadosContaOrigem.vlSaldo - valorParse) < 0) {
                             saldoSuficiente = false;
                             retorno.envia(res,400,false,'','Saldo insuficiente',null);
                         }
@@ -40,26 +40,26 @@ module.exports = (app) => {
 
                     const historicoOrigem = new transacao({
                         tpTransacao: "debito",
-                        vlTransacao: valor,
+                        vlTransacao: valorParse,
                         contaRef: contaDestino,
                         agenciaRef: agenciaDestino,
                         observacao: observacao,
                         vlAnterior: dadosContaOrigem.vlSaldo,
-                        vlAtual: dadosContaOrigem.vlSaldo - valor 
+                        vlAtual: dadosContaOrigem.vlSaldo - valorParse 
                     });
 
                     const historicoDestino = new transacao({
                         tpTransacao: "credito",
-                        vlTransacao: valor,
+                        vlTransacao: valorParse,
                         contaRef: contaOrigem,
                         agenciaRef: agenciaOrigem,
                         observacao: observacao,
                         vlAnterior: dadosContaDestino.vlSaldo,
-                        vlAtual: dadosContaDestino.vlSaldo + valor 
+                        vlAtual: dadosContaDestino.vlSaldo + valorParse 
                     });
 
-                    task.update("Conta", { nrConta: contaOrigem, nrAgencia: agenciaOrigem }, {$inc: {vlSaldo: -valor}, $push: {transacoes: historicoOrigem}})
-                        .update("Conta", { nrConta: contaDestino, nrAgencia: agenciaDestino }, {$inc: {vlSaldo: valor}, $push: {transacoes: historicoDestino}})
+                    task.update("Conta", { nrConta: contaOrigem, nrAgencia: agenciaOrigem }, {$inc: {vlSaldo: -valorParse}, $push: {transacoes: historicoOrigem}})
+                        .update("Conta", { nrConta: contaDestino, nrAgencia: agenciaDestino }, {$inc: {vlSaldo: valorParse}, $push: {transacoes: historicoDestino}})
                         .run({ useMongoose: true })
                         .then(function(results){
                             retorno.envia(res,200,true,null,'Transferência Realizada com Sucesso',null);
