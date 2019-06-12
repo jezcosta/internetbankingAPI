@@ -15,9 +15,9 @@ mongoose.connect(mongoHost);
 
 const options = {
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
-  // credentials: true,
+  credentials: true,
   methods: "GET,POST",
-  // preflightContinue: false
+  preflightContinue: false
 };
 
 app.set('views', path.join(__dirname, 'views'));
