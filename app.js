@@ -13,6 +13,7 @@ const app = express();
 
 mongoose.connect(mongoHost);
 
+//options para cors
 const options = {
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
   // credentials: true,
